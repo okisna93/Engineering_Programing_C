@@ -1,0 +1,5 @@
+# ninja log v5
+8	94	6844679761177879	src/CMakeFiles/f_func.dir/functionSum.cpp.obj	57ef010350447e4
+95	207	6844679762348107	src/libf_func.a	b8f7bd7bfda6ab5b
+1	389	6844679764138797	CMakeFiles/main_executable.dir/main.cpp.obj	6471c021a0f740aa
+391	508	6844679765329333	main_executable.exe	a2f0f47b8d6f212a

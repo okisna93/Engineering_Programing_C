@@ -1,0 +1,6 @@
+C:/Users/okanc/Documents/Engineering_Programing_C++/HW1/one-okisna93-main/cmake-build-debug/CMakeFiles/main_executable.dir
+C:/Users/okanc/Documents/Engineering_Programing_C++/HW1/one-okisna93-main/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/okanc/Documents/Engineering_Programing_C++/HW1/one-okisna93-main/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/okanc/Documents/Engineering_Programing_C++/HW1/one-okisna93-main/cmake-build-debug/src/CMakeFiles/f_func.dir
+C:/Users/okanc/Documents/Engineering_Programing_C++/HW1/one-okisna93-main/cmake-build-debug/src/CMakeFiles/edit_cache.dir
+C:/Users/okanc/Documents/Engineering_Programing_C++/HW1/one-okisna93-main/cmake-build-debug/src/CMakeFiles/rebuild_cache.dir
