@@ -11,14 +11,12 @@ const double G=6.674*pow(10,-11);
 const double pi= 3.14159265358979323846;
 
 struct Vec3d{
-    double x,y,z;
+    int x,y,z;
 };
-
 ostream& operator<<(ostream& ostr, Vec3d a){
     ostr<<a.x<<","<<a.y<<","<< a.z;
     return ostr;
 }
-
 class Body{
 private:
     string name;
@@ -29,9 +27,6 @@ private:
     Vec3d a;
 
 public:
-    friend ostream& operator<<(ostream& ostr, Body k);
-    friend class SolarSystem;
-
 
     Body(){
         name="none";
@@ -53,6 +48,7 @@ public:
         a={ac.x,ac.y,ac.z};
     }
 
+    friend ostream& operator<<(ostream& ostr, Body k);
 
    static auto setAccelerations(vector<Body>& b, int& acc){
         static vector<Body> newBodies;
@@ -66,8 +62,10 @@ public:
         return newBodies;
    }
 
+    friend class SolarSystem;
 
 };
+
 ostream& operator<<(ostream& ostr, Body k){
     ostr<<k.name<<" "<<k.orbit<<" "<<k.mass<<" "<<k.pos<<" "<<k.v<<" "<<k.a<<endl;;
     return ostr;
@@ -78,9 +76,12 @@ public:
     vector<Body> bodies;
     friend ostream& operator<<(ostream& ostr, SolarSystem a);
 
-    SolarSystem(){
+    //string data_location;
+
+    // open ifstream file+
+    SolarSystem(string location){
         ifstream solarfile;
-        solarfile.open("solarsystem.dat");
+        solarfile.open(location);
 
         if (solarfile.is_open()){
 
@@ -110,19 +111,6 @@ public:
         double acceleration;
         int i=0;
 
-    /*
-
-        while (getline (solarfile, line)){
-
-            if (i==0){
-                i++;
-                continue;
-            }else{
-                cout << line << endl;
-                i++;
-            }
-    */
-
         while (!solarfile.eof()){
             if(i<10){
                 // Skipping the first line because it shows headers and we are not going to use in our calculations
@@ -142,17 +130,21 @@ public:
 
                     //cout<<name<<endl;
                     //Calculation of the orbit radius and velocity for each planet
-                    radius=(peri*aplehon)/2;
+                    radius=(peri+aplehon)/2;
                     velocity=sqrt((G*sun_mass)/radius);
 
                     // Postion Vector
-                    Vec3d posVect={rand()%10+1,rand()%10+1,rand()%10+1};
+                    double random1=(rand()%10+1);
+                    double random2=(rand()%10+1);
+                    double random3=(rand()%10+1);
+                    Vec3d posVect={random1,random2,random3};
+                    //Vec3d posVect={rand()%10+1,rand()%10+1,rand()%10+1};
                     //cout<<"Postion Vector ="<<posVect<<endl;
 
                     //Calculation of Velocity Vector
                     random_device rd;  // Will be used to obtain a seed for the random number engine
                     mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
-                    uniform_real_distribution<> dis(0, 2.0*pi);
+                    uniform_real_distribution<double> dis(0, 2.0*pi);
                     double x_velc=radius*cos(dis(gen));
                     double y_velc=radius*sin(dis(gen));
                     Vec3d vVect={velocity*x_velc,velocity*y_velc,0};
@@ -162,6 +154,10 @@ public:
                     acceleration=pow(velocity,2)/radius;
                     Vec3d acVect={acceleration*x_velc,acceleration*y_velc,0};
                     //cout<<"Acceleration Vector = "<<acVect<<endl;
+
+                    cout<<"body name: "<<name<<" "<<"orbit: "<<orbit<<endl;
+                    cout<<"orbiral velocity is: "<<velocity<<endl;
+                    cout<<"centripetal acceleration: "<<acceleration<<endl<<endl;
 
                     //Creating Body type temp object the store needed information
                     Body temp;
@@ -177,46 +173,62 @@ public:
                     break;
                 }
             }
-
         }
         solarfile.close();
-
-        // Displaying bodies vector in the solar system
-        //for (Body& i : bodies) {
-         //   cout << i << "  ";
-       // }
     }
     void stepForward(int acc){
-         //this just give the acceleration value
-        //for(int i=0;i<bodies.size();i++){
-            //cout<<bodies[i].name<<" "<<bodies[i].a.x<<endl;
-            //cout<<bodies[i].name<<" "<<bodies[i].a.x*acc<<endl;
-           // cout<<bodies[i].name<<" "<<bodies[i].a.y*acc<<endl<<endl;
-           //bodies[i].a.x=bodies[i].a.x*acc;
         Body::setAccelerations(bodies,acc);
-        //cout<<acc;
     }
 
 };
 
-ostream& operator<<(ostream& ostr, SolarSystem s){
-
+ostream& operator<<(std::ostream& ostr, SolarSystem s){
     for (int i=0;i<s.bodies.size();i++){
-         ostr << s.bodies[i] << "  ";
-    }
+        ostr << s.bodies[i] << "  ";
 
+    }
+    return ostr;
 }
 
 
+
 int main(){
+    cout << "########" << endl;
+    cout << "Main Problem" << endl;
+    cout << "########" << endl;
 
-    SolarSystem a;
-    cout<<"--------1--------"<<endl;
-    cout<<a;
+    // SolarSystem s should read the file to print and do calculation
+    // when you creat object Solarsystem s('.dat path') it read the file and print only planets orbiting the sun  as shown below
+    //    body name:Jupiter orbit: Sun
+    //    orbital velocity is: 13058
+    //    centripetal acceleration: 0.000219013
+    //    body name:Saturn orbit: Sun
+    //    orbital velocity is: 9623.1
+    //    centripetal acceleration: 6.45977e-05
+    //    ==================
+    // Write your fullpath here to location where solarsystem.dat exist.
+    SolarSystem s("C:/Users/okanc/Documents/Engineering_Programing_C/HW5/five-okisna93-main/src/solarsystem.dat");
 
-    cout<<"--------2--------"<<endl;
-    a.stepForward(100);
-    cout<<a;
+
+    cout << s;
+    // After reading the file print calculation done on Solarsystem
+    // overload << operator in SolarSystem class to print out variables as follows
+    //    Mercury, Sun, 3.3e+23, 8, 10, 4, -2147483648, -2147483648, 0, -1981977299, 1152671425, 0
+    //    Venus, Sun, 4.87e+24, 9, 1, 3, -2147483648, -2147483648, 0, 1021382959, -679782887, 0
+
+
+    cout << "=============" << endl;
+
+    // add acceleration equal 100
+    // Use function .stepForward() on object Solarsystem to set the new acceleration
+    int acc = 5000;
+    s.stepForward(acc);
+    // print out the new solarsystem
+    cout << s;
+
+    cout << "====[ end ]====" << endl;
+    cout << "               " << endl;
+
 
 
     return 0;

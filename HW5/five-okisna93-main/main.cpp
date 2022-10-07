@@ -54,8 +54,6 @@ private:
     Vec3d a;
 
 public:
-    friend ostream& operator<<(ostream& ostr, Body k);
-    friend class SolarSystem;
 
     // default body constructor set all variables to zero and string to "none"
     // name it Body()
@@ -90,6 +88,7 @@ public:
     // don't forget to use friend keyword here for overloading function
     // main program show an example of the output
     // write your code here
+    friend ostream& operator<<(ostream& ostr, Body k);
 
     // create setAccelerations() function that change the acceleration of planet in SolarSystem
     // this function should loop through Solarsystem object and change acceleration of each body planet
@@ -109,6 +108,7 @@ public:
     }
 
     // make sure that SolarSystem class is a friend to Body()
+    friend class SolarSystem;
 
 };
 ostream& operator<<(ostream& ostr, Body k){
@@ -135,9 +135,9 @@ public:
     // SolarSystem()
 
     // open ifstream file+
-    SolarSystem(){
+    SolarSystem(string location){
         ifstream solarfile;
-        solarfile.open("C:\\Users\\okanc\\Documents\\Engineering_Programing_C\\HW5\\five-okisna93-main\\src\\solarsystem.dat");
+        solarfile.open(location);
 
 
 
@@ -147,7 +147,7 @@ public:
 
         cout << "File is open and ready" << '\n';
         cout << " " << '\n';
-//            return; // use this for program testing to check file is open only without reading the data
+        //return; // use this for program testing to check file is open only without reading the data
     }else{
         cout << "File not found!" << '\n';
         cout << "check if path is .././src/***" << '\n';
@@ -205,64 +205,68 @@ public:
 
                     //cout<<name<<endl;
                     //Calculation of the orbit radius and velocity for each planet
-                    radius=(peri*aplehon)/2;
+                    radius=(peri+aplehon)/2;
                     velocity=sqrt((G*sun_mass)/radius);
 
 
 
-    // For x, y, and z of Vec3d pos"position" generate random number between 0 and 10
-    // look up how to use rand function
+                    // For x, y, and z of Vec3d pos"position" generate random number between 0 and 10
+                    // look up how to use rand function
                     // Postion Vector
-                    Vec3d posVect={rand()%10+1,rand()%10+1,rand()%10+1};
-                    //cout<<"Postion Vector ="<<posVect<<endl;
+                    double random1=rand()%10+1;
+                    double random2=rand()%10+1;
+                    double random3=rand()%10+1;
+                    Vec3d posVect={random1,random2,random3};
 
-    // we will calculate random angle between 0 and 2*pi
-    // look up how to use uniform_real_distribution
-    // check out https://en.cppreference.com/w/cpp/numeric/random/uniform_real_distribution
+                    // we will calculate random angle between 0 and 2*pi
+                    // look up how to use uniform_real_distribution
+                    // check out https://en.cppreference.com/w/cpp/numeric/random/uniform_real_distribution
 
-    // For x, y, and z of Vec3d velocity will be
-    // x = r cos(ang)  ===> x*v"the calculated velocity"
-    // y = r sin(ang) ====> y*v
-    // z = zero
+                    // For x, y, and z of Vec3d velocity will be
+                    // x = r cos(ang)  ===> x*v"the calculated velocity"
+                    // y = r sin(ang) ====> y*v
+                    // z = zero
                     //Calculation of Velocity Vector
                     random_device rd;  // Will be used to obtain a seed for the random number engine
                     mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
-                    uniform_real_distribution<> dis(0, 2.0*pi);
+                    uniform_real_distribution<double> dis(0, 2.0*pi);
                     double x_velc=radius*cos(dis(gen));
                     double y_velc=radius*sin(dis(gen));
                     Vec3d vVect={velocity*x_velc,velocity*y_velc,0};
                     //cout<<"Velocity Vector = "<<vVect<<endl;
 
-    // For x, y, and z of Vec3d acceleration, where a = v^2 / r,  will be
-    // x = r cos(ang)  ===> x*a"the calculated velocity"
-    // y = r sin(ang) ====> y*a
-    // z = zero
+                    // For x, y, and z of Vec3d acceleration, where a = v^2 / r,  will be
+                    // x = r cos(ang)  ===> x*a"the calculated velocity"
+                    // y = r sin(ang) ====> y*a
+                    // z = zero
                     //Calculation of Acceleration Vector
                     acceleration=pow(velocity,2)/radius;
                     Vec3d acVect={acceleration*x_velc,acceleration*y_velc,0};
-                    //cout<<"Acceleration Vector = "<<acVect<<endl;
 
-    // Before reading the next planet create temp Body class object and save needed information
-    // .push_back() the Body into the SolarSystem bodies class
 
-    // don't forget to close the open .dat file after reading the complete file
+                    cout<<"body name: "<<name<<" "<<"orbit: "<<orbit<<endl;
+                    cout<<"orbiral velocity is: "<<velocity<<endl;
+                    cout<<"centripetal acceleration: "<<acceleration<<endl<<endl;
+
+                    // Before reading the next planet create temp Body class object and save needed information
+                    // .push_back() the Body into the SolarSystem bodies class
+
+                    // don't forget to close the open .dat file after reading the complete file
                     Body temp;
                     temp={name,orbit,mass,posVect,vVect,acVect};
-                    //cout<<"BodyVect = "<<temp<<endl<<endl;
 
                     bodies.push_back(temp);
 
-                    //cout<<name<<" "<<radius<<" "<<velocity<<endl<<endl;
                 }
 
-                if(name=="Jupiter"){
+                if(name=="Saturn"){
                     break;
                 }
             }
 
         }
         solarfile.close();
-
+    cout<<"================"<<endl;
     }
     // add the value of accelerations in stepForward
     // this function take variable bodies inside Solarsystem and int acc and use it with function setAccelerations
@@ -270,15 +274,22 @@ public:
     // stepForward()
 
     void stepForward(int acc){
-
         Body::setAccelerations(bodies,acc);
-        //cout<<acc;
     }
 
     // overload SolarSystem object, so it loops through list of bodies and cout it
     // this function also depend on the overload of Body class
 
 };
+
+// Over loading SolarSystem object
+ostream& operator<<(ostream& ostr, SolarSystem s){
+
+    for (int i=0;i<s.bodies.size();i++){
+        ostr << s.bodies[i] << "  ";
+    }
+    return ostr;
+}
 
 int main() {
     cout << "########" << endl;
