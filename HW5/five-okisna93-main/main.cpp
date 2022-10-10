@@ -20,8 +20,9 @@ const double pi= 3.14159265358979323846;
 // ------------------------------------
 struct Vec3d
 {
-    int x, y, z;
+    double x, y, z;
 };
+
 
 // overload << operator for struct Vec3d
 // when use << so it prints like this: x_value, y_value, z_value

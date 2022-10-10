@@ -11,7 +11,7 @@ const double G=6.674*pow(10,-11);
 const double pi= 3.14159265358979323846;
 
 struct Vec3d{
-    int x,y,z;
+    double x,y,z;
 };
 ostream& operator<<(ostream& ostr, Vec3d a){
     ostr<<a.x<<","<<a.y<<","<< a.z;
