@@ -1,0 +1,18 @@
+# ninja log v5
+2	298	6871420812420005	CMakeFiles/classwork2.dir/main.cpp.obj	db51eda660fc5c2d
+3	166	6871421993620194	build.ninja	2db00c84f2ed5d77
+319	423	6871419869183817	classwork2.exe	b2b76541e43b9641
+3	325	6871426528638483	CMakeFiles/classwork2.dir/main.cpp.obj	db51eda660fc5c2d
+11	251	6871426919451923	CMakeFiles/classwork2.dir/CarFunc.cpp.obj	fa02aa17a5634432
+3	307	6871426920007723	CMakeFiles/classwork2.dir/main.cpp.obj	db51eda660fc5c2d
+307	422	6871426921157161	classwork2.exe	b8910767974c654f
+3	300	6871427490109082	CMakeFiles/classwork2.dir/main.cpp.obj	db51eda660fc5c2d
+300	409	6871427491184423	classwork2.exe	b8910767974c654f
+12	278	6871430532833401	CMakeFiles/classwork2.dir/CarFunc.cpp.obj	fa02aa17a5634432
+3	313	6871430619758394	CMakeFiles/classwork2.dir/main.cpp.obj	db51eda660fc5c2d
+313	429	6871430620891423	classwork2.exe	b8910767974c654f
+3	303	6871431478758765	CMakeFiles/classwork2.dir/main.cpp.obj	db51eda660fc5c2d
+303	418	6871431479892577	classwork2.exe	b8910767974c654f
+12	289	6871432780563039	CMakeFiles/classwork2.dir/CarFunc.cpp.obj	fa02aa17a5634432
+2	349	6871432781173396	CMakeFiles/classwork2.dir/main.cpp.obj	db51eda660fc5c2d
+349	466	6871432782318974	classwork2.exe	b8910767974c654f
