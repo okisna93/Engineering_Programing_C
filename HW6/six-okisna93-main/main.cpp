@@ -25,6 +25,31 @@ using namespace std;
 
 //}; end of class
 
+
+class Zebra{
+private:
+    string name;
+    static int count;
+
+public:
+
+    Zebra(string n){
+        name=n;
+        cout<<"Hello I'm just born! my name is: "<<name<<endl;
+        count++;
+    }
+    string getName(){
+        return name;
+    }
+    ~Zebra(){
+        count--;
+        cout<<"Ugh! I'm dying and the current count : "<<count<<endl;
+    }
+    static int getCount(){
+        return count;
+    }
+};
+
 // -------------- Design your ZebraKid class here ---------------
 // -----------------------------------------------------------
 // Create a another class ZebraKid that inherit Zebra functions (getName)
@@ -33,7 +58,16 @@ using namespace std;
 // don't write any other function, you should be able to inherit Zebra function
 //}; end of class
 
+class ZebraKid:public Zebra
+{
+public:
+    ZebraKid(string n):Zebra(n){
+        Zebra::getName();
+    }
+};
+
 // Set Zebra count equal zero
+int Zebra::count=0;
 
 // -------------- Design void function f() ---------------
 // -----------------------------------------------------------
@@ -45,6 +79,13 @@ using namespace std;
 //   - Print the new count
 // when the function is called it will construct object and when it scopes finish
 //... it will destruct and print messages of object is dying in same time
+
+void f(){
+    cout<<Zebra::getCount()<<endl;
+    Zebra a("Joker");
+    Zebra b("Alice");
+    cout<<Zebra::getCount()<<endl;
+}
 
 
 int main() {

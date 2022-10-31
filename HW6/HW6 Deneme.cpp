@@ -31,11 +31,12 @@ private:
     static int count;
 
 public:
-    Zebra()
-    {
-        name="none";
-    }
-    Zebra(string name){
+    //Zebra()
+    //{
+     //   name;
+    //}
+    Zebra(string n){
+        name=n;
         cout<<"Hello I'm just born! my name is: "<<name<<endl;
         count++;
     }
@@ -62,9 +63,9 @@ public:
 class ZebraKid:public Zebra
 {
 public:
-    ZebraKid():Zebra(){
-        Zebra::getName();
-    }
+//    ZebraKid():Zebra(){
+ //       Zebra::getName();
+  //  }
     ZebraKid(string n):Zebra(n){
         Zebra::getName();
     }
@@ -96,8 +97,9 @@ void f(){
 int main() {
 
 
-    //Zebra a("James");
-    //cout<<a.Zebra::getName();
+   // Zebra a("James");
+    //cout<<a.getName()<<endl;
+    //cout<<a.Zebra::getName()<<endl;
     //cout<<a.Zebra::getCount()<<endl;
 
    // Zebra b("James");
