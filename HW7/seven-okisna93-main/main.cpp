@@ -239,7 +239,7 @@ int main() {
     cout << "########" << endl;
 
     // set path to create .ps file to write postscript instructions
-    Drawing d("C:\\Users\\okanc\\Documents\\Engineering_Programing_C\\HW7\\seven-okisna93-main\\test2.ps");
+    Drawing d("C:\\Users\\okanc\\Documents\\Engineering_Programing_C\\HW7\\seven-okisna93-main\\testSon.ps");
     // set color
     d.setrgb(1,0,0); // set drawing color to be bright red:  1 0 0 setrgbcolor
     // add FilledRect
