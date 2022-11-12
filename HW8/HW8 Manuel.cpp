@@ -32,30 +32,55 @@ public:
 
     String(const char *p){
         length=strlen(p);
-        str=new char(length);
+        str=new char[length];
         for(int i=0;i<length;i++){
             str[i]=p[i];
         }
     }
     ~String(){
-        delete str;
+        delete[] str;
     }
     friend ostream& operator<<(ostream& ostr,const String& a);
 
-//    String(const String& obj){
-//        this->length=new int;
-//        *(this->length)=*(obj.length);
-//        *(this->str)=*(obj.str);
-//    }
+    String(const String& obj){
+        length=obj.length;
+        str=new char[length];
+        for(int i=0;i<length;i++){
+            str[i]=obj.str[i];
+        }
+    }
+
+    String(String && obj){
+        str=obj.str;
+        obj.str=nullptr;
+    }
+
+    String& operator=(const String& obj){
+        length = obj.length;
+        this->str=new char[length];
+        for(auto i=0;i<length;++i){
+            this->str[i] = obj.str[i] ;
+        }
+        return *this;
+    }
 
     String operator+(String& obj){
         String overload;
-        strcat(this->str,obj.str);
-        overload.length=strlen(this->str);
-        overload.str=new char(obj.length);
-        strcpy(overload.str,this->str);
+//        strcat(this->str,obj.str);
+//        overload.length=strlen(this->str);
+//        overload.str=new char(obj.length);
+//        strcpy(overload.str,this->str);
+        overload.length=length+obj.length;
+        overload.str=new char[overload.length];
+        for(int i=0;i<length;i++){
+            overload.str[i]=this->str[i];
+        }
+        for(int a=0;a<obj.length;a++){
+            overload.str[length+a]=obj.str[a];
+        }
         return overload;
     }
+
 };
 
 ostream& operator<<(ostream& ostr,const String& a){
@@ -65,20 +90,6 @@ ostream& operator<<(ostream& ostr,const String& a){
 }
 
 int main(){
-//    String s="abc";
-//    cout<<"s is: "<<s<<endl;
-//
-//    String s2="def";
-//    cout<<"s2 is: "<<s2<<endl;
-//
-//    String s3=s2;
-//    cout<<"s3 is: "<<s3<<" Copy Constructor"<<endl;
-//
-//
-//
-//    cout<<"Operator overloading for +"<<endl;
-//    cout<<"=========================="<<endl;
-//    cout<<s+s2<<endl;
 
 
     cout << "########" << endl;
@@ -88,23 +99,23 @@ int main(){
     // Create String s = abc
     String s = "abc";
     // cout s
-    cout << "s is: " << s << '\n';
+    cout << "s is: " << s <<endl;
     // Create String s = def
     String s2 = "def";
     // cout s2
-    cout  << "s2 is: " << s2 << '\n';
+    cout  << "s2 is: " << s2 <<endl;
     // create String s3 equal s2
     String s3 = s2; // copy constructor
     // cout s3
-    cout << "s3 is: " << s3 << " copy constructor "<<'\n';
+    cout << "s3 is: " << s3 << " copy constructor "<<endl;
     //	Create String s4 that is assigned to s added to s2
     String s4 = s + s2;  // abcdef // copy constructor
     // cout s4
-    cout << "s4 is: " << s4 << " copy constructor of s + s2"<< '\n';
+    cout << "s4 is: " << s4 << " copy constructor of s + s2"<<endl;
     // Create s5 and move s4
     String s5 = move(s4); // move constructor
     // cout s5
-    cout << "s5 is: " << s5 << '\n';
+    cout << "s5 is: " << s5 <<endl;
     cout << "cout s4 should give you error after move()" << endl;
     cout << s4 << '\n';
     cout << "====[ end ]====" << endl;

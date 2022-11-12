@@ -19,6 +19,71 @@ using namespace std;
 //  6. Assign operator = for copy constructor
 //  7. Overload + operator to add/combine to String cat + dog => catdog
 
+class String{
+private:
+    int length;
+    char *str;
+public:
+    String(){
+        length=0;
+        str=nullptr;
+    }
+
+    String(const char *p){
+        length=strlen(p);
+        str=new char[length];
+        for(int i=0;i<length;i++){
+            str[i]=p[i];
+        }
+    }
+    ~String(){
+        delete[] str;
+    }
+    friend ostream& operator<<(ostream& ostr,const String& a);
+
+    String(const String& obj){
+        length=obj.length;
+        str=new char[length];
+        for(auto i=0;i<length;i++){
+            str[i]=obj.str[i];
+        }
+    }
+
+    String(String && obj){
+        str=obj.str;
+        obj.str=nullptr;
+    }
+
+    String& operator=(const String& obj){
+        length = obj.length;
+        str=new char[length];
+        for(auto i=0;i<length;++i){
+            str[i] = obj.str[i];
+        }
+        return *this;
+    }
+
+    String operator+(String& obj){
+        String overload;
+        overload.length=length+obj.length;
+        overload.str=new char[overload.length];
+        for(int i=0;i<length;i++){
+            overload.str[i]=this->str[i];
+        }
+        for(int a=0;a<obj.length;a++){
+            overload.str[length+a]=obj.str[a];
+        }
+        return overload;
+    }
+
+};
+
+ostream& operator<<(ostream& ostr,const String& a){
+    ostr<<a.str;
+
+    return ostr;
+}
+
 
 int main() {
     cout << "########" << endl;
