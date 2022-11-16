@@ -82,9 +82,16 @@ public:
 
         fstream taskfile;
         taskfile.open("TASK.txt",std::ios_base::app);
-        taskfile<<person.name<<" "<<pri<<" "<<task;
+        taskfile<<person.name<<endl;
+        taskfile<<person.lastname<<endl;
+        taskfile<<pri<<endl;
+        taskfile<<task<<endl;
         taskfile.close();
     }
+    void showTask(string location){
+
+    }
+
     string getTask(){
         return task;
     }
@@ -126,7 +133,7 @@ int main(){
     gotoxy(30,10); // move the cursor to postion 30, 10 from top-left corner
     cout<<"1. Add New Employee"; // Add new employee to the system
     gotoxy(30,12);
-    cout<<"2. List Records"; // Show Team Members and Their Titles
+    cout<<"2. List Employee Records"; // Show Team Members and Their Titles
     gotoxy(30,14);
     cout<<"3. Assign Task"; // Assign task to the employee
     gotoxy(30,16);
@@ -137,11 +144,14 @@ int main(){
     cout<<"Your Choice: "; // enter the choice 1, 2, 3, 4, 5
     int choice;
     cin>>choice;
+    bool mainFunc=true;
 
     //Entering New Employee Record to the file
     bool flag=true;
     fstream n;
     n.open("EMPLOYEE.txt");
+
+    //while(mainFunc)
 
     if(choice==1){
         system("cls");
@@ -255,9 +265,39 @@ int main(){
 //            Team[0].assingTask()
 //        }
 
+    }
+    if(choice==4){
+        system("cls");
+
+        const char separator    = ' ';
+        const int nameWidth     = 15;
+        cout<<left<<setw(nameWidth) << setfill(separator) <<"Name";
+        cout<<left<<setw(nameWidth) << setfill(separator) <<"LastName";
+        cout<<left<<setw(nameWidth) << setfill(separator) <<"Priority";
+        cout<<left<<setw(20) << setfill(separator) <<"Task"<<endl;
+        cout<<"=============================================================="<<endl;
+
+        ifstream f;
+        f.open("TASK.txt");
+        int x=1;
+        int y=4;
+        int result;
+        string line;
+        while(getline(f,line)){
+            cout<<left<<setw(nameWidth)<< setfill(separator)  <<line;
+            result=x%4;
+            if(result==0){
+                cout<<endl;
+            }
+            x++;
+        }
+        f.close();
 
     }
     n.close(); /// Where will you close the file, decide on that
+
+
+
 
     //Reading From File to Show Entered Data
 
