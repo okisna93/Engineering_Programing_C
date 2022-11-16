@@ -129,6 +129,11 @@ void gotoxy(int x,int y)
 }
 
 int main(){
+    //Formating the outputs like a chart
+    const char separator    = ' ';
+    const int nameWidth     = 15;
+    const int numWidth      = 15;
+
     const int ESC=27;  // Using ESC Button for Returning to Main Menu
     char k; // For User Input to Detect Whether ESC is Pressed
     bool mainFunc=true;
@@ -170,12 +175,14 @@ int main(){
                 cin>>c;
                 b.setLastname(c);
                 cout<<"Enter Title : ";
-                cin>>k;
+                getline(cin>>ws,k);
                 b.setTitle(k);
 
                 //cout<<"Employe Name and Title"<<endl;
                 //cout<<b.getName()<<" "<<b.getLastname()<<" "<<b.getTitle()<<endl;
-                n<<b.getName()<<" "<<b.getLastname()<<" "<<b.getTitle()<<endl;
+                n<<b.getName()<<endl;
+                n<<b.getLastname()<<endl;
+                n<<b.getTitle()<<endl;
 
                 cout<<endl<<endl;
                 char answer;
@@ -188,14 +195,21 @@ int main(){
         }
         if(choice==2){
             system("cls");
-            string name;
-            string lastname;
-            string title;
-            cout<<"Name"<<setw(19)<<"Last Name"<<setw(15)<<"Title"<<endl;
-            cout<<"=========================================="<<endl;
-            while(!n.eof()){
-                n>>name>>lastname>>title;
-                cout<<name<<setw(20-name.size())<<lastname<<setw(17)<<title<<endl;
+            //cout<<"Name"<<setw(19)<<"Last Name"<<setw(15)<<"Title"<<endl;
+            cout<<left<<setw(nameWidth) << setfill(separator) <<"Name";
+            cout<<left<<setw(nameWidth) << setfill(separator) <<"LastName";
+            cout<<left<<setw(nameWidth) << setfill(separator) <<"Title"<<endl;
+            cout<<"==============================================="<<endl;
+            int x=1;
+            string line;
+            int result;
+            while(getline(n,line)){
+                cout<<left<<setw(15)<< setfill(' ')<<line;
+                result=x%3;
+                if(result==0){
+                    cout<<endl;
+                }
+                x++;
             }
             cout<<endl<<"Please Press the ESC Button to go Back to Main Menu "<<endl;
             k=getch();
@@ -209,8 +223,9 @@ int main(){
             string lname;
             string t;
             vector<Project> Team;
-            while(!n.eof()){
-                n>>na>>lname>>t;
+            while(getline(n,na,'\n')&&
+                  getline(n,lname,'\n')&&
+                  getline(n,t,'\n')){
                 Project a;
                 a.name=na;
                 a.lastname=lname;
@@ -219,13 +234,13 @@ int main(){
             }
 
             for(int i=0;i<Team.size();i++){
-                cout<<i+1<<" - "<<Team[i].name<<" "<<Team[i].lastname<<" "<<Team[i].task<<endl;
+                cout<<i+1<<" - "<<Team[i].name<<" "<<Team[i].lastname<<" "<<endl;//Team[i].task<<endl;
             }
 
             bool taskFlag=true;
             while(taskFlag==true){
                 char ans;
-                cout<<"Do you want to assign more task (y/n)";
+                cout<<"Do you want to assign a task (y/n)";
                 cin>>ans;
                 if(ans=='n'){
                     taskFlag=false;
@@ -248,15 +263,6 @@ int main(){
 
             }
 
-            //cout<<endl<<endl<<"SHOW WHOLE TEAM"<<endl;
-            //cout<<"================================="<<endl;
-            //for(int i=0;i<Team.size();i++){
-                //cout<<Team[i]<<endl;
-            //}
-
-            const char separator    = ' ';
-            const int nameWidth     = 15;
-            const int numWidth      = 15;
             cout<<left<<setw(nameWidth) << setfill(separator) <<"Name";
             cout<<left<<setw(nameWidth) << setfill(separator) <<"LastName";
             cout<<left<<setw(nameWidth) << setfill(separator) <<"Priority";
