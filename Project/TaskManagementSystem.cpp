@@ -2,7 +2,7 @@
 #include <string>
 #include <iomanip>
 #include <fstream>
-#include <stdio.h> ///for input output functions like printf, scanf
+#include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
 #include <windows.h>
@@ -224,26 +224,28 @@ int main(){
 
             bool taskFlag=true;
             while(taskFlag==true){
-                int selection;
-                cout<<"Please Select the Person's Number You Want to Assign a Task : ";
-                cin>>selection;
-
-                int z;
-                cout<<"What is the priority level : ";
-                cin>>z;
-
-                cout<<"What is the task : ";
-                string taskWrite;
-                getline(cin>>ws,taskWrite);
-
-                Team[selection-1].assingTask(Team[selection-1],taskWrite,z);
-
                 char ans;
                 cout<<"Do you want to assign more task (y/n)";
                 cin>>ans;
                 if(ans=='n'){
                     taskFlag=false;
+                }else{
+                    int selection;
+                    cout<<"Please Select the Person's Number You Want to Assign a Task : ";
+                    cin>>selection;
+
+                    int z;
+                    cout<<"What is the priority level : ";
+                    cin>>z;
+
+                    cout<<"What is the task : ";
+                    string taskWrite;
+                    getline(cin>>ws,taskWrite);
+
+                    Team[selection-1].assingTask(Team[selection-1],taskWrite,z);
+
                 }
+
             }
 
             //cout<<endl<<endl<<"SHOW WHOLE TEAM"<<endl;
