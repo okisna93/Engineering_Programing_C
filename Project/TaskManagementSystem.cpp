@@ -54,6 +54,7 @@ public:
     int priority;
     int status;
     string task;
+    int deadline;
 
 public:
     Project(){
@@ -63,20 +64,23 @@ public:
         priority=0;
         status=0;
         task="none";
+        deadline=0;
     }
-    Project(Employee a,string t, int p, int s){
+    Project(Employee a,string t, int p, int s,int dl){
         person.name=a.name;
         person.lastname=a.lastname;
         person.title=a.title;
         priority=p;
         status=s;
         task=t;
+        deadline=dl;
     }
-    void assingTask(Employee p,string t, int pri,int s){
+    void assingTask(Employee p,string t, int pri,int s,int dl){
 
         task=t;
         priority=pri;
         status=s;
+        deadline=dl;
 
         person.name=p.name;
         person.lastname=p.lastname;
@@ -88,16 +92,65 @@ public:
         taskfile<<person.lastname<<endl;
         taskfile<<pri<<endl;
         taskfile<<task<<endl;
-        taskfile<<status<<"%"<<endl;
+        if(status==100){
+            taskfile<<status<<"% Completed"<<endl;
+        }else{
+            taskfile<<status<<"% InProgress"<<endl;
+        }
+        taskfile<<Deadline(dl)<<endl; //Calling the deadline function
         taskfile.close();
     }
-    void showTask(string location){
 
+    //This function help us to add days to current date
+    //For example, when we assign a task , we need to declare deadline in terms of days
+    //If we declare deadline as 30 days, function automatically adds 30 days to current date and calculate the deadline date
+    void DatePlusDays( struct tm* date, int days )
+    {
+        const time_t ONE_DAY = 24 * 60 * 60 ;
+
+        // Seconds since start of epoch
+        time_t date_seconds = mktime( date ) + (days * ONE_DAY) ;
+
+        // Update caller's date
+        // Use localtime because mktime converts to UTC so may change date
+        *date = *localtime( &date_seconds ) ;
+    }
+    string Deadline(int days){
+        time_t t = time(0);   // get time now
+        tm* now = localtime(&t);
+
+        // initializing the local date
+        struct tm date = { 0, 0, 12 } ;
+        int year = now->tm_year + 1900 ;
+        int month = now->tm_mon + 1 ;
+        int day = now->tm_mday ;
+
+        // Set up the date structure
+        date.tm_year = year - 1900 ;
+        date.tm_mon = month - 1 ;  // note: zero indexed
+        date.tm_mday = day ;       // note: not zero indexed
+
+        // Adding days to current date
+        DatePlusDays( &date, +days ) ;
+
+        // Show time/date using default formatting
+        char *deadline;
+        deadline=new char[15];//Memory allocation for deadline date
+        string d; // Loop through asctime(&date) to changing display format, get rid of from hours and only showing day,month,year
+        int k=0;
+        for(int i=0;i<strlen(asctime(&date));i++){
+            if(i>=11 && i<=19){
+            }
+            else{
+               deadline[k]=asctime(&date)[i];
+               d.push_back(deadline[k]);
+            }
+        }
+        delete []deadline; //releasing the memory
+        return d ;//returning to string date format is: Fri Dec 16 2022
     }
 
-    string getTask(){
-        return task;
-    }
+
 //    void setStatus(bool a){
 //        cout<<"What is the Status of the task (T/F)?"<<endl;
 //        cout<<"Please Enter 1 if it's in progress, enter 0 if it's completed";
@@ -110,9 +163,6 @@ public:
 //            status="Completed";
 //        }
 //    }
-    int getStatus(){
-        return status;
-    }
 };
 
 ostream& operator<<(ostream& ostr, Project team){
@@ -277,7 +327,12 @@ int main(){
                     int s;
                     cin>>s;
 
-                    Team[selection-1].assingTask(Team[selection-1],taskWrite,z,s);
+                    cout<<"Deadline (How many days ?) :";
+                    int dl;
+                    cin>>dl;
+
+
+                    Team[selection-1].assingTask(Team[selection-1],taskWrite,z,s,dl);
 
                 }
 
@@ -307,14 +362,13 @@ int main(){
         if(choice==4){
             system("cls");
             while(1){
-                const char separator    = ' ';
-                const int nameWidth     = 15;
-                cout<<left<<setw(nameWidth) << setfill(separator) <<"Name";
+                cout<<left<<setw(0.75*nameWidth) << setfill(separator) <<"Name";
                 cout<<left<<setw(nameWidth) << setfill(separator) <<"LastName";
-                cout<<left<<setw(nameWidth) << setfill(separator) <<"Priority";
-                cout<<left<<setw(nameWidth) << setfill(separator) <<"Status";
-                cout<<left<<setw(20) << setfill(separator) <<"Task"<<endl;
-                cout<<"========================================================================"<<endl;
+                cout<<left<<setw(0.75*nameWidth) << setfill(separator) <<"Priority";
+                cout<<left<<setw(1.5*nameWidth) << setfill(separator) <<"Status";
+                cout<<left<<setw(1.5*nameWidth) << setfill(separator) <<"Deadline";
+                cout<<left<<setw(nameWidth) << setfill(separator) <<"Task"<<endl;
+                cout<<"=================================================================================================="<<endl;
 
                 fstream f;
                 f.open("TASK.txt");
@@ -326,15 +380,20 @@ int main(){
                 string task;
                 string priority;
                 string status;
+                string deadline;
+                string empt;
                 while(getline(f,name,'\n')&&
                       getline(f,lastname,'\n')&&
                       getline(f,priority,'\n')&&
                       getline(f,task,'\n')&&
-                      getline(f,status,'\n')){
-                    cout<<left<<setw(nameWidth)<< setfill(separator)  <<name;
+                      getline(f,status,'\n')&&
+                      getline(f,deadline,'\n')&&
+                      getline(f,empt)){
+                    cout<<left<<setw(0.75*nameWidth)<< setfill(separator)  <<name;
                     cout<<left<<setw(nameWidth)<< setfill(separator)  <<lastname;
-                    cout<<left<<setw(nameWidth)<< setfill(separator)  <<priority;
-                    cout<<left<<setw(nameWidth)<< setfill(separator)  <<status;
+                    cout<<left<<setw(0.75*nameWidth)<< setfill(separator)  <<priority;
+                    cout<<left<<setw(1.5*nameWidth)<< setfill(separator)  <<status;
+                    cout<<left<<setw(1.5*nameWidth)<< setfill(separator)  <<deadline;
                     cout<<left<<setw(nameWidth)<< setfill(separator)  <<task<<endl;
 //                    result=x%4;
 //                    if(result==0){

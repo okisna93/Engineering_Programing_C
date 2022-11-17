@@ -1,15 +1,14 @@
 Okan
 Celik
 5
-Developping ML
-0
-Mehmet
-Yildirim
-3
-Designing Main Page
-30
-Jenny
-Cruz
-4
-Recruting Software Engineer
-30%
+App Development
+100% Completed
+Sat Nov 19 2022
+
+Chris
+Evans
+5
+Algoritma Optimization
+30% InProgress
+Thu Dec 01 2022
+
