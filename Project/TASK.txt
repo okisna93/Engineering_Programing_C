@@ -1,32 +1,15 @@
 Okan
 Celik
 5
-Web Tasarimi Google Icin
-Ismet
-Orhan
+Developping ML
+0
+Mehmet
+Yildirim
 3
-Application Design
-Mahmut
-Dagci
-2
-Orginizing File System
-Okan
-Celik
+Designing Main Page
+30
+Jenny
+Cruz
 4
-dasdasfa
-Okan
-Celik
-2
-asdasdad
-Hasan
-Yilmaz
-2
-5
-Hasan
-Yilmaz
-4
-Law
-Mahmut
-Dagci
-4
-Drone Design
+Recruting Software Engineer
+30%

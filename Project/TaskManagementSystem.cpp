@@ -52,7 +52,7 @@ class Project:public Employee{
 public:
     Employee person;
     int priority;
-    string status;
+    int status;
     string task;
 
 public:
@@ -61,10 +61,10 @@ public:
         person.lastname="none";
         person.title="none";
         priority=0;
-        status="none";
+        status=0;
         task="none";
     }
-    Project(Employee a,string t, int p, string s){
+    Project(Employee a,string t, int p, int s){
         person.name=a.name;
         person.lastname=a.lastname;
         person.title=a.title;
@@ -72,10 +72,11 @@ public:
         status=s;
         task=t;
     }
-    void assingTask(Employee p,string t, int pri){
+    void assingTask(Employee p,string t, int pri,int s){
 
         task=t;
         priority=pri;
+        status=s;
 
         person.name=p.name;
         person.lastname=p.lastname;
@@ -87,6 +88,7 @@ public:
         taskfile<<person.lastname<<endl;
         taskfile<<pri<<endl;
         taskfile<<task<<endl;
+        taskfile<<status<<"%"<<endl;
         taskfile.close();
     }
     void showTask(string location){
@@ -96,19 +98,19 @@ public:
     string getTask(){
         return task;
     }
-    void setStatus(bool a){
-        cout<<"What is the Status of the task (T/F)?"<<endl;
-        cout<<"Please Enter 1 if it's in progress, enter 0 if it's completed";
-
-        cin>>a;
-
-        if(a==true){
-            status="In Progress";
-        }else{
-            status="Completed";
-        }
-    }
-    string getStatus(){
+//    void setStatus(bool a){
+//        cout<<"What is the Status of the task (T/F)?"<<endl;
+//        cout<<"Please Enter 1 if it's in progress, enter 0 if it's completed";
+//
+//        cin>>a;
+//
+//        if(a==true){
+//            status="In Progress";
+//        }else{
+//            status="Completed";
+//        }
+//    }
+    int getStatus(){
         return status;
     }
 };
@@ -158,67 +160,81 @@ int main(){
 
         //Entering New Employee Record to the file
         bool flag=true;
-        fstream n;
-        n.open("EMPLOYEE.txt");
-
         if(choice==1){
             system("cls");
+            fstream n;
+            n.open("EMPLOYEE.txt",std::ios_base::app);
             while(flag==true){
-                Employee b;
-                string a;
-                string c;
-                string k;
-                cout<<"Enter Name : ";
-                cin>>a;
-                b.setName(a);
-                cout<<"Enter LastName : ";
-                cin>>c;
-                b.setLastname(c);
-                cout<<"Enter Title : ";
-                getline(cin>>ws,k);
-                b.setTitle(k);
-
-                //cout<<"Employe Name and Title"<<endl;
-                //cout<<b.getName()<<" "<<b.getLastname()<<" "<<b.getTitle()<<endl;
-                n<<b.getName()<<endl;
-                n<<b.getLastname()<<endl;
-                n<<b.getTitle()<<endl;
-
-                cout<<endl<<endl;
                 char answer;
                 cout<<"Do you want to add new employee to the system (y/n) : ";
                 cin>>answer;
                 if(answer=='n'){
                     flag=false;
+                }else{
+                    cout<<endl<<endl;
+                    Employee b;
+                    string a;
+                    string c;
+                    string k;
+                    cout<<"Enter Name : ";
+                    getline(cin>>ws,a);
+                    b.setName(a);
+                    cout<<"Enter LastName : ";
+                    getline(cin>>ws,c);
+                    b.setLastname(c);
+                    cout<<"Enter Title : ";
+                    getline(cin>>ws,k);
+                    b.setTitle(k);
+
+                    //cout<<"Employe Name and Title"<<endl;
+                    //cout<<b.getName()<<" "<<b.getLastname()<<" "<<b.getTitle()<<endl;
+                    n<<b.getName()<<endl;
+                    n<<b.getLastname()<<endl;
+                    n<<b.getTitle()<<endl;
+                    cout<<endl<<endl;
                 }
+
+
             }
+            n.close();
         }
         if(choice==2){
             system("cls");
+            fstream listing;
+            listing.open("EMPLOYEE.txt");
             //cout<<"Name"<<setw(19)<<"Last Name"<<setw(15)<<"Title"<<endl;
             cout<<left<<setw(nameWidth) << setfill(separator) <<"Name";
             cout<<left<<setw(nameWidth) << setfill(separator) <<"LastName";
             cout<<left<<setw(nameWidth) << setfill(separator) <<"Title"<<endl;
             cout<<"==============================================="<<endl;
             int x=1;
-            string line;
+            string name;
+            string lastname;
+            string title;
             int result;
-            while(getline(n,line)){
-                cout<<left<<setw(15)<< setfill(' ')<<line;
-                result=x%3;
-                if(result==0){
-                    cout<<endl;
-                }
-                x++;
+            while(getline(listing,name,'\n')&&
+                  getline(listing,lastname,'\n')&&
+                  getline(listing,title,'\n')){
+                cout<<left<<setw(nameWidth)<< setfill(separator)<<name;
+                cout<<left<<setw(nameWidth)<< setfill(separator)<<lastname;
+                cout<<left<<setw(nameWidth)<< setfill(separator)<<title<<endl;
+//                result=x%3;
+//                if(result==0){
+//                    cout<<endl;
+//                }
+//                x++;
             }
             cout<<endl<<"Please Press the ESC Button to go Back to Main Menu "<<endl;
             k=getch();
             if(k==ESC){
+                listing.close();
                 continue;
             }
         }
         if(choice==3){
             system("cls");
+            fstream n;
+            n.open("EMPLOYEE.txt");
             string na;
             string lname;
             string t;
@@ -257,30 +273,36 @@ int main(){
                     string taskWrite;
                     getline(cin>>ws,taskWrite);
 
-                    Team[selection-1].assingTask(Team[selection-1],taskWrite,z);
+                    cout<<"What is the status of the task(Percentage) : ";
+                    int s;
+                    cin>>s;
+
+                    Team[selection-1].assingTask(Team[selection-1],taskWrite,z,s);
 
                 }
 
             }
 
-            cout<<left<<setw(nameWidth) << setfill(separator) <<"Name";
-            cout<<left<<setw(nameWidth) << setfill(separator) <<"LastName";
-            cout<<left<<setw(nameWidth) << setfill(separator) <<"Priority";
-            cout<<left<<setw(nameWidth) << setfill(separator) <<"Task"<<endl;
-            cout<<"========================================================"<<endl;
-            for(int i=0;i<Team.size();i++){
-                cout<<left<<setw(nameWidth) << setfill(separator) <<Team[i].name;
-                cout<<left<<setw(nameWidth) << setfill(separator) <<Team[i].lastname;
-                cout<<left<<setw(nameWidth) << setfill(separator) <<Team[i].priority;
-                cout<<left<<setw(nameWidth) << setfill(separator) <<Team[i].getTask()<<endl;
-            }
+//            cout<<left<<setw(nameWidth) << setfill(separator) <<"Name";
+//            cout<<left<<setw(nameWidth) << setfill(separator) <<"LastName";
+//            cout<<left<<setw(nameWidth) << setfill(separator) <<"Priority";
+//            cout<<left<<setw(nameWidth) << setfill(separator) <<"Status";
+//            cout<<left<<setw(nameWidth) << setfill(separator) <<"Task"<<endl;
+//            cout<<"========================================================"<<endl;
+//            for(int i=0;i<Team.size();i++){
+//                cout<<left<<setw(nameWidth) << setfill(separator) <<Team[i].name;
+//                cout<<left<<setw(nameWidth) << setfill(separator) <<Team[i].lastname;
+//                cout<<left<<setw(nameWidth) << setfill(separator) <<Team[i].priority;
+//                cout<<left<<setw(nameWidth) << setfill(separator) <<Team[i].status;
+//                cout<<left<<setw(nameWidth) << setfill(separator) <<Team[i].getTask()<<endl;
+//            }
 
 
 
     //        if(selection==1){
     //            Team[0].assingTask()
     //        }
-
+            n.close();
         }
         if(choice==4){
             system("cls");
@@ -290,24 +312,37 @@ int main(){
                 cout<<left<<setw(nameWidth) << setfill(separator) <<"Name";
                 cout<<left<<setw(nameWidth) << setfill(separator) <<"LastName";
                 cout<<left<<setw(nameWidth) << setfill(separator) <<"Priority";
+                cout<<left<<setw(nameWidth) << setfill(separator) <<"Status";
                 cout<<left<<setw(20) << setfill(separator) <<"Task"<<endl;
-                cout<<"=============================================================="<<endl;
+                cout<<"========================================================================"<<endl;
 
-                ifstream f;
+                fstream f;
                 f.open("TASK.txt");
-                int x=1;
-                int y=4;
-                int result;
-                string line;
-                while(getline(f,line)){
-                    cout<<left<<setw(nameWidth)<< setfill(separator)  <<line;
-                    result=x%4;
-                    if(result==0){
-                        cout<<endl;
-                    }
-                    x++;
+//                int x=1;
+//                int y=4;
+//                int result;
+                string name;
+                string lastname;
+                string task;
+                string priority;
+                string status;
+                while(getline(f,name,'\n')&&
+                      getline(f,lastname,'\n')&&
+                      getline(f,priority,'\n')&&
+                      getline(f,task,'\n')&&
+                      getline(f,status,'\n')){
+                    cout<<left<<setw(nameWidth)<< setfill(separator)  <<name;
+                    cout<<left<<setw(nameWidth)<< setfill(separator)  <<lastname;
+                    cout<<left<<setw(nameWidth)<< setfill(separator)  <<priority;
+                    cout<<left<<setw(nameWidth)<< setfill(separator)  <<status;
+                    cout<<left<<setw(nameWidth)<< setfill(separator)  <<task<<endl;
+//                    result=x%4;
+//                    if(result==0){
+//                        cout<<endl;
+//                    }
+//                    x++;
                 }
-                cout<<"Please Enter ESC to go back to Main Menu"<<endl;
+                cout<<endl<<"Please Enter ESC to go back to Main Menu"<<endl;
 
 
                 k=getch();
@@ -321,7 +356,6 @@ int main(){
         }
         if(choice==5){
             system("cls");
-            n.close(); // Closing the file Employee record file
             cout<<"Program Closed "<<endl;
             mainFunc=false;
         }
