@@ -75,7 +75,7 @@ public:
         task=t;
         deadline=dl;
     }
-    void assingTask(Employee p,string t, int pri,int s,int dl){
+    void assingTask(Employee p,string t, int pri,int s,int dl,string location){
 
         task=t;
         priority=pri;
@@ -87,7 +87,7 @@ public:
         person.title=p.title;
 
         fstream taskfile;
-        taskfile.open("TASK.txt",std::ios_base::app);
+        taskfile.open(location,std::ios_base::app);
         taskfile<<person.name<<endl;
         taskfile<<person.lastname<<endl;
         taskfile<<pri<<endl;
@@ -332,7 +332,7 @@ int main(){
                     cin>>dl;
 
 
-                    Team[selection-1].assingTask(Team[selection-1],taskWrite,z,s,dl);
+                    Team[selection-1].assingTask(Team[selection-1],taskWrite,z,s,dl,"TASK.txt");
 
                 }
 
@@ -343,6 +343,7 @@ int main(){
         if(choice==4){
             system("cls");
             while(1){
+                cout<<left<<setw(0.60*nameWidth) << setfill(separator) <<"TaskId";
                 cout<<left<<setw(0.75*nameWidth) << setfill(separator) <<"Name";
                 cout<<left<<setw(nameWidth) << setfill(separator) <<"LastName";
                 cout<<left<<setw(0.75*nameWidth) << setfill(separator) <<"Priority";
@@ -363,6 +364,8 @@ int main(){
                 string status;
                 string deadline;
                 string empt;
+                vector<Project> TrackStatus;
+                int TaskId=0;
                 while(getline(f,name,'\n')&&
                       getline(f,lastname,'\n')&&
                       getline(f,priority,'\n')&&
@@ -370,20 +373,79 @@ int main(){
                       getline(f,status,'\n')&&
                       getline(f,deadline,'\n')&&
                       getline(f,empt)){
+                    int pri;
+                    int stat;
+                    pri=stoi(priority); // Converting string priority to integer
+                    if(stoi(status.substr(0, 3))>=100){  // Converting string status to integer
+                        stat=100;
+                    }else{
+                        stat=stoi(status.substr(0, 2));
+                    }
+                    TaskId++;
+                    cout<<left<<setw(0.60*nameWidth)<< setfill(separator)  <<TaskId;
                     cout<<left<<setw(0.75*nameWidth)<< setfill(separator)  <<name;
                     cout<<left<<setw(nameWidth)<< setfill(separator)  <<lastname;
                     cout<<left<<setw(0.75*nameWidth)<< setfill(separator)  <<priority;
-                    cout<<left<<setw(1.5*nameWidth)<< setfill(separator)  <<status;
+                    cout<<left<<setw(1.5*nameWidth)<< setfill(separator)  <<status; ;
                     cout<<left<<setw(1.5*nameWidth)<< setfill(separator)  <<deadline;
                     cout<<left<<setw(nameWidth)<< setfill(separator)  <<task<<endl;
-//                    result=x%4;
-//                    if(result==0){
-//                        cout<<endl;
-//                    }
-//                    x++;
+                    Project a;
+                    a.name=name;
+                    a.lastname=lastname;
+                    a.priority=pri;
+                    a.status=stat;
+                    a.task=task;
+                    TrackStatus.push_back(a);
                 }
-                cout<<endl<<"Please Enter ESC to go back to Main Menu"<<endl;
+                while(1){
+                    cout<<endl<<"Do you want to update your status (y/n) ? : ";
+                    char answ;
+                    answ=getch();
+                    if(answ=='n'){
+                        break;
+                    }else{
+                        cout<<endl<<"Please Enter the TaskId Number for Modification : ";
+                        int selection;
+                        cin>>selection;
 
+                        cout<<left<<setw(0.75*nameWidth) << setfill(separator) <<"Name";
+                        cout<<left<<setw(nameWidth) << setfill(separator) <<"LastName";
+                        cout<<left<<setw(0.75*nameWidth) << setfill(separator) <<"Priority";
+                        cout<<left<<setw(1.5*nameWidth) << setfill(separator) <<"Status"<<endl;
+                        cout<<"=================================================="<<endl;
+
+                        cout<<left<<setw(0.75*nameWidth) << setfill(separator) <<TrackStatus[selection-1].name;
+                        cout<<left<<setw(nameWidth) << setfill(separator) <<TrackStatus[selection-1].lastname;
+                        cout<<left<<setw(0.75*nameWidth) << setfill(separator) <<TrackStatus[selection-1].priority;
+                        cout<<left<<setw(1.5*nameWidth) << setfill(separator) <<TrackStatus[selection-1].status<<endl;
+                        cout<<endl<<"Modify Status :";
+                        int newStatus;
+                        cin>>newStatus;
+                        if(newStatus>=100){
+                            newStatus=100;
+                        }
+                        cout<<endl<<"How Many Days Left for Deadline :";
+                        int leftDeadline;
+                        cin>>leftDeadline;
+                        TrackStatus[selection-1].status=newStatus;
+                        TrackStatus[selection-1].deadline=leftDeadline;
+                    }
+                    cout<<endl;
+                }
+
+                cout<<endl<<"===========AFTER MODIFICATION=============="<<endl;
+                cout<<left<<setw(0.75*nameWidth) << setfill(separator) <<"Name";
+                cout<<left<<setw(nameWidth) << setfill(separator) <<"LastName";
+                cout<<left<<setw(0.75*nameWidth) << setfill(separator) <<"Priority";
+                cout<<left<<setw(1.5*nameWidth) << setfill(separator) <<"Status"<<endl;
+                cout<<"==========================================="<<endl;
+                for(int i=0;i<TrackStatus.size();i++){
+                    cout<<left<<setw(0.75*nameWidth) << setfill(separator) <<TrackStatus[i].name;
+                    cout<<left<<setw(nameWidth) << setfill(separator) <<TrackStatus[i].lastname;
+                    cout<<left<<setw(0.75*nameWidth) << setfill(separator) <<TrackStatus[i].priority;
+                    cout<<left<<setw(1.5*nameWidth) << setfill(separator) <<TrackStatus[i].status<<endl;
+                    TrackStatus[i].assingTask(TrackStatus[i],TrackStatus[i].task,TrackStatus[i].priority,TrackStatus[i].status,TrackStatus[i].deadline,"TASK1.txt");
+                }
 
                 k=getch();
 

@@ -428,7 +428,7 @@ int main(){
             }
         }
     }
-    if(UserAdmin=="User"){
+    if(UserAdmin=="Okan"){
         while(mainFunc){
             system("cls");
             gotoxy(30,10);
