@@ -351,12 +351,10 @@ int main(){
                 cout<<left<<setw(1.5*nameWidth) << setfill(separator) <<"Deadline";
                 cout<<left<<setw(nameWidth) << setfill(separator) <<"Task"<<endl;
                 cout<<"=================================================================================================="<<endl;
+                FILE *newFile=fopen("TASK1.txt","w");
 
                 fstream f;
                 f.open("TASK.txt");
-//                int x=1;
-//                int y=4;
-//                int result;
                 string name;
                 string lastname;
                 string task;
@@ -446,13 +444,17 @@ int main(){
                     cout<<left<<setw(1.5*nameWidth) << setfill(separator) <<TrackStatus[i].status<<endl;
                     TrackStatus[i].assingTask(TrackStatus[i],TrackStatus[i].task,TrackStatus[i].priority,TrackStatus[i].status,TrackStatus[i].deadline,"TASK1.txt");
                 }
-
+                cout<<"Press ESC to Return Main Menu"<<endl;
                 k=getch();
-
+                f.close();
+                fclose(newFile);
+                remove("TASK.txt");
+                rename("TASK1.txt","TASK.txt");
+                cout<<"FILE REMOVED"<<endl;
                 if(k==ESC){
                     break;
                 }
-                f.close();
+
             }
 
         }

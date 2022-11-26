@@ -3,20 +3,19 @@ Celik
 5
 App Development
 100% Completed
-Sat Nov 19 2022
+Fri Nov 25 2022
 
 Chris
 Evans
 5
 Algoritma Optimization
-30% InProgress
-Thu Dec 01 2022
+100% Completed
+Fri Nov 25 2022
 
 Okan
 Celik
 3
 Website Design
-25% InProgress
-Sat Nov 19 2022
-
+50% InProgress
+Wed Nov 30 2022
 
