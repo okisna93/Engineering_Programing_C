@@ -149,20 +149,6 @@ public:
         delete []deadline; //releasing the memory
         return d ;//returning to string date format is: Fri Dec 16 2022
     }
-
-
-//    void setStatus(bool a){
-//        cout<<"What is the Status of the task (T/F)?"<<endl;
-//        cout<<"Please Enter 1 if it's in progress, enter 0 if it's completed";
-//
-//        cin>>a;
-//
-//        if(a==true){
-//            status="In Progress";
-//        }else{
-//            status="Completed";
-//        }
-//    }
 };
 
 ostream& operator<<(ostream& ostr, Project team){
@@ -351,7 +337,7 @@ int main(){
                 cout<<left<<setw(1.5*nameWidth) << setfill(separator) <<"Deadline";
                 cout<<left<<setw(nameWidth) << setfill(separator) <<"Task"<<endl;
                 cout<<"=================================================================================================="<<endl;
-                FILE *newFile=fopen("TASK1.txt","w");
+                FILE *newFile=fopen("TASK1.txt","w");  // Creating temporary file in order to write modification to this file
 
                 fstream f;
                 f.open("TASK.txt");
@@ -437,6 +423,7 @@ int main(){
                 cout<<left<<setw(0.75*nameWidth) << setfill(separator) <<"Priority";
                 cout<<left<<setw(1.5*nameWidth) << setfill(separator) <<"Status"<<endl;
                 cout<<"==========================================="<<endl;
+                // Writing Modifications to the File
                 for(int i=0;i<TrackStatus.size();i++){
                     cout<<left<<setw(0.75*nameWidth) << setfill(separator) <<TrackStatus[i].name;
                     cout<<left<<setw(nameWidth) << setfill(separator) <<TrackStatus[i].lastname;
@@ -448,9 +435,8 @@ int main(){
                 k=getch();
                 f.close();
                 fclose(newFile);
-                remove("TASK.txt");
-                rename("TASK1.txt","TASK.txt");
-                cout<<"FILE REMOVED"<<endl;
+                remove("TASK.txt");  //Removing the old main file
+                rename("TASK1.txt","TASK.txt");  //Renaming temporary file as main file
                 if(k==ESC){
                     break;
                 }
