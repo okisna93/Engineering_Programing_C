@@ -75,6 +75,19 @@ public:
         task=t;
         deadline=dl;
     }
+    string getStatus(int s){
+        status=s;
+        string convert;
+        convert=to_string(status);
+        if(status==100){
+            convert=convert+"% Completed";
+        }else{
+            convert=convert+"% InProgress";
+        }
+        return convert;
+    }
+
+    //Storing Tasks Information in a File
     void assingTask(Employee p,string t, int pri,int s,int dl,string location){
 
         task=t;
@@ -92,11 +105,12 @@ public:
         taskfile<<person.lastname<<endl;
         taskfile<<pri<<endl;
         taskfile<<task<<endl;
-        if(status==100){
-            taskfile<<status<<"% Completed"<<endl;
-        }else{
-            taskfile<<status<<"% InProgress"<<endl;
-        }
+        taskfile<<getStatus(status)<<endl;
+//        if(status==100){
+//            taskfile<<status<<"% Completed"<<endl;
+//        }else{
+//            taskfile<<status<<"% InProgress"<<endl;
+//        }
         taskfile<<Deadline(dl)<<endl; //Calling the deadline function
         taskfile.close();
     }
@@ -133,36 +147,31 @@ public:
         // Adding days to current date
         DatePlusDays( &date, +days ) ;
 
+        //string d=asctime(&date);
+
         // Show time/date using default formatting
         char *deadline;
-        deadline=new char[15];//Memory allocation for deadline date
+        deadline=new char[14];//Memory allocation for deadline date
         string d; // Loop through asctime(&date) to changing display format, get rid of from hours and only showing day,month,year
         int k=0;
+        //for(int i=0;i<strlen(asctime(&date));i++){
         for(int i=0;i<strlen(asctime(&date));i++){
-            if(i>=11 && i<=19){
+            if(i>=0 && i<=9){
+                deadline[k]=asctime(&date)[i];
+                d.push_back(deadline[k]);
+            }
+            if(i>=19 && i<=23){
+                deadline[k]=asctime(&date)[i];
+                d.push_back(deadline[k]);
             }
             else{
-               deadline[k]=asctime(&date)[i];
-               d.push_back(deadline[k]);
+               continue;
             }
         }
         delete []deadline; //releasing the memory
         return d ;//returning to string date format is: Fri Dec 16 2022
     }
 
-
-//    void setStatus(bool a){
-//        cout<<"What is the Status of the task (T/F)?"<<endl;
-//        cout<<"Please Enter 1 if it's in progress, enter 0 if it's completed";
-//
-//        cin>>a;
-//
-//        if(a==true){
-//            status="In Progress";
-//        }else{
-//            status="Completed";
-//        }
-//    }
 };
 
 ostream& operator<<(ostream& ostr, Project team){
@@ -276,11 +285,6 @@ int main(){
                     cout<<left<<setw(nameWidth)<< setfill(separator)<<name;
                     cout<<left<<setw(nameWidth)<< setfill(separator)<<lastname;
                     cout<<left<<setw(nameWidth)<< setfill(separator)<<title<<endl;
-    //                result=x%3;
-    //                if(result==0){
-    //                    cout<<endl;
-    //                }
-    //                x++;
                 }
                 cout<<endl<<"Please Press the ESC Button to go Back to Main Menu "<<endl;
                 k=getch();
@@ -359,7 +363,9 @@ int main(){
                     cout<<left<<setw(1.5*nameWidth) << setfill(separator) <<"Deadline";
                     cout<<left<<setw(nameWidth) << setfill(separator) <<"Task"<<endl;
                     cout<<"=================================================================================================="<<endl;
-                    FILE *newFile=fopen("TASK1.txt","w");  // Creating temporary file in order to write modification to this file
+                    //Creating temporary file in order to write modification to this file
+                    //FILE *newFile=fopen("TASK1.txt","w");  //
+                    FILE *newFile=fopen("TEMP_TASK.txt","w"); //Creating Temporary File
 
                     fstream f;
                     f.open("TASK.txt");
@@ -373,6 +379,17 @@ int main(){
                     vector<Project> TrackStatus;
                     vector<string> DeadlineList; //Storing previous deadlines in the vector
                     int TaskId=0;
+
+                    //Determining Array Size in order to store deadlines in the array
+//                    int listSize=0;
+//                    string line;
+//                    while(getline(f,line,'\n')){
+//                        listSize++;
+//                    }
+//                    listSize=listSize/7; //thats because ever person has seven line space in the line, trying to figure out how many people assigned task
+//                    string *DeadlineArray;
+//                    DeadlineArray= new string[listSize];
+
                     while(getline(f,name,'\n')&&
                           getline(f,lastname,'\n')&&
                           getline(f,priority,'\n')&&
@@ -404,7 +421,10 @@ int main(){
                         a.task=task;
                         TrackStatus.push_back(a);
                         DeadlineList.push_back(deadline); //Storing Previous Deadlines in the vector
+//                        DeadlineArray[TaskId-1]=deadline;
                     }
+
+                    cout<<endl<<endl;
                     while(1){
                         cout<<endl<<"Do you want to update the deadline (y/n) ? : ";
                         char answ;
@@ -422,12 +442,12 @@ int main(){
                             cout<<left<<setw(1.5*nameWidth) << setfill(separator) <<"Status";
                             cout<<left<<setw(1.5*nameWidth) << setfill(separator) <<"Deadline"<<endl;
                             cout<<"================================================================================"<<endl;
-
                             cout<<left<<setw(0.75*nameWidth) << setfill(separator) <<TrackStatus[selection-1].name;
                             cout<<left<<setw(nameWidth) << setfill(separator) <<TrackStatus[selection-1].lastname;
                             cout<<left<<setw(0.75*nameWidth) << setfill(separator) <<TrackStatus[selection-1].priority;
                             cout<<left<<setw(1.5*nameWidth) << setfill(separator) <<TrackStatus[selection-1].status;
                             cout<<left<<setw(1.5*nameWidth) << setfill(separator) <<DeadlineList[selection-1]<<endl;
+//                            cout<<left<<setw(1.5*nameWidth) << setfill(separator) <<DeadlineArray[selection-1]<<endl;
 //                            int newStatus;
 //                            cin>>newStatus;
 //                            if(newStatus>=100){
@@ -437,6 +457,8 @@ int main(){
                             int leftDeadline;
                             cin>>leftDeadline;
                             TrackStatus[selection-1].deadline=leftDeadline;
+                            DeadlineList[selection-1]=TrackStatus[selection-1].Deadline(leftDeadline);
+                            //DeadlineArray[selection-1]=TrackStatus[selection-1].Deadline(TrackStatus[selection-1].deadline);
                         }
                         cout<<endl;
                     }
@@ -446,27 +468,36 @@ int main(){
                     cout<<left<<setw(nameWidth) << setfill(separator) <<"LastName";
                     cout<<left<<setw(0.75*nameWidth) << setfill(separator) <<"Priority";
                     cout<<left<<setw(1.5*nameWidth) << setfill(separator) <<"Status";
-                    cout<<left<<setw(0.50*nameWidth) << setfill(separator) <<"Deadline"<<endl;
-                    cout<<"==========================================="<<endl;
+                    cout<<left<<setw(0.50*nameWidth) << setfill(separator) <<"NewDeadlines"<<endl;
+                    cout<<"=============================================================="<<endl;
                     // Writing Modifications to the File
                     for(int i=0;i<TrackStatus.size();i++){
                         cout<<left<<setw(0.75*nameWidth) << setfill(separator) <<TrackStatus[i].name;
                         cout<<left<<setw(nameWidth) << setfill(separator) <<TrackStatus[i].lastname;
                         cout<<left<<setw(0.75*nameWidth) << setfill(separator) <<TrackStatus[i].priority;
                         cout<<left<<setw(1.5*nameWidth) << setfill(separator) <<TrackStatus[i].status;
-                        cout<<left<<setw(0.50*nameWidth) << setfill(separator) <<DeadlineList[i];
-                        cout<<"  Added "<<TrackStatus[i].deadline<<" days to the deadline"<<endl;
+                        cout<<left<<setw(0.50*nameWidth) << setfill(separator) <<DeadlineList[i]<<endl;
 
-                        ///Instead Using AssignTask Function try to write manually to the file
-                        ///Open the file write manually
-                        TrackStatus[i].assingTask(TrackStatus[i],TrackStatus[i].task,TrackStatus[i].priority,TrackStatus[i].status,TrackStatus[i].deadline,"TASK1.txt");
+                        //Opening temporary file to write the updated deadlines
+
+                        fstream NEWF;
+                        NEWF.open("TEMP_TASK.txt",std::ios_base::app);
+                        NEWF<<TrackStatus[i].name<<'\n';
+                        NEWF<<TrackStatus[i].lastname<<'\n';
+                        NEWF<<TrackStatus[i].priority<<'\n';
+                        NEWF<<TrackStatus[i].task<<'\n';
+                        NEWF<<TrackStatus[i].getStatus(TrackStatus[i].status)<<'\n';
+                        NEWF<<DeadlineList[i]<<'\n'<<'\n';
+                        NEWF.close();
                     }
                     cout<<"Press ESC to Return Main Menu"<<endl;
                     k=getch();
                     f.close();
                     fclose(newFile);
                     remove("TASK.txt");  //Removing the old main file
-                    rename("TASK1.txt","TASK.txt");  //Renaming temporary file as main file
+                    rename("TEMP_TASK.txt","TASK.txt");  //Renaming temporary file as main file
+                    //fclose(newFile);
+
                     if(k==ESC){
                         break;
                     }
@@ -505,6 +536,8 @@ int main(){
                     cout<<left<<setw(nameWidth) << setfill(separator) <<"Task"<<endl;
                     cout<<"=================================================================================================="<<endl;
                     FILE *newFile=fopen("TASK1.txt","w");  // Creating temporary file in order to write modification to this file
+                    fstream NEWF;
+                    //NEWF.open(("TASK1.txt"));
 
                     fstream f;
                     f.open("TASK.txt");
