@@ -9,13 +9,13 @@ Chris
 Evans
 5
 Algoritma Optimization
-30% InProgress
+50% InProgress
 Thu Dec 29 2022
 
 Okan
 Celik
 3
 App Development
-20% InProgress
+100% Completed
 Mon Nov 28 2022
 
