@@ -89,12 +89,12 @@ public:
 
     }
     Matrix(const Matrix&& obj){
-        for(int i;i<rows;i++){
-            for(int a;a<cols;a++){
+        for(int i=0;i<rows;i++){
+            for(int a=0;a<cols;a++){
                 m[i][a]=obj.m[i][a];
             }
         }
-        for(int i;i<rows;i++){
+        for(int i=0;i<rows;i++){
             delete obj.m[i];
             obj.m[i]=nullptr;
         }
@@ -102,7 +102,7 @@ public:
         m=nullptr;
     }
 
-    double operator()(uint32_t r,uint32_t c)const{
+    double& operator()(uint32_t r,uint32_t c)const{
         return m[r][c];
     }
     double& operator()(uint32_t r,uint32_t c){
@@ -147,7 +147,7 @@ int main() {
     cout << a << endl;
     // print out one element in the matrix
     // overload of () return const value
-    cout << a(2,3) << endl;
+    cout << a(2,3) << endl;    //--------> IT'S OUT OF BOUND, IT NEED TO BE a(2,2), BECAUSE OUR MATRIX LAST INDEX IS 2, HERE 3 IS GIVEN AS COLUMN INDEX
     // change one element in a(2,2) equal 1.5
     // overload of () assign reference to 1.5
     a(2,2) = 1.5;

@@ -71,7 +71,6 @@ public:
     }
 
     //Asign operator= for copy constructor
-    /// CHECK HERE AGAIN
     Matrix& operator=(Matrix& obj){
         swap(*this,obj);
         return *this;
@@ -88,12 +87,12 @@ public:
 
     }
     Matrix(const Matrix&& obj){
-        for(int i;i<rows;i++){
-            for(int a;a<cols;a++){
+        for(int i=0;i<rows;i++){
+            for(int a=0;a<cols;a++){
                 m[i][a]=obj.m[i][a];
             }
         }
-        for(int i;i<rows;i++){
+        for(int i=0;i<rows;i++){
             delete obj.m[i];
             obj.m[i]=nullptr;
         }
@@ -103,9 +102,11 @@ public:
 
     double operator()(uint32_t r,uint32_t j)const{
         return m[r][j];
+
     }
     double& operator()(uint32_t r,uint32_t j){
         return m[r][j];
+
     }
 
     double* operator[](uint32_t r){
@@ -168,5 +169,6 @@ int main(){
     cout << "\n";
     cout << "====[ end ]====" << endl;
     cout << "               " << endl;
+
     return 0;
 }

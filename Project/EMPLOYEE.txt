@@ -1,16 +1,21 @@
-Okan
-Celik
+Jordan
+Cristopher
 Software Engineer
-Mehmet
-Yildirim
-UX Designer
+John
+Smith
+UI Designer
 Mary
 Brown
 IOS Developer
-Chris
+Micheal
 Evans
 Hardware Designer
 Jenny
 Cruz
-Human Resource
-
+Human Resource Manager
+Emily
+Miller
+Data Scientist
+Okan
+Celik
+Software Developer

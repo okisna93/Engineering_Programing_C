@@ -1,0 +1,28 @@
+Jordan
+Cristopher
+5
+Developing Weather Forecast System
+10% InProgress
+Fri Dec 30 2022
+
+John
+Smith
+4
+Designing UI for Weather Forecast System
+30% InProgress
+Sun Dec 25 2022
+
+Mary
+Brown
+3
+Optimizing Login System Mobile App
+40% InProgress
+Thu Dec 15 2022
+
+Emily
+Miller
+5
+Developing Stock Price Forcasting Model
+20% InProgress
+Wed Jan 04 2023
+
